@@ -20,7 +20,7 @@ ui <- fluidPage(
         tabPanel("Plotly", plotlyOutput("plotly_plot")),
         tabPanel("Reactable", reactableOutput("reactable_table")),
         tabPanel("DT Table", DTOutput("dt_table")),
-        tabPanel("Highcharter", highchartOutput("highcharter_plot"))
+        tabPanel("Highcharter", highchartOutput("highchart_plot"))
       )
     )
   )
@@ -28,10 +28,21 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-
+  filtered_data <- reactive({
+    mtcars %>%
+      filter(mpg >= input$range[1], mpg <= input$range[2])
+  })
   
-  # Call modules
-
+  output$highchart <- renderHighchart({  
+  highchart()%>%
+    hc_add_series(filtered_data(), "scatter", 
+                  hcaes(x = mpg, y = hp, group = factor(cyl)),
+                  marker = list(symbol = "circle")) %>%
+      hc_tooltip(pointFormat = "HP: {point.y} <br> MPG: {point.x}") %>%
+      hc_title(text = "MTcars Data") %>%
+      hc_xAxis(title = list(text = "Consumption - Miles per Gallon (mpg)")) %>%
+      hc_yAxis(title = list(text = "Horsepower (hp)"))
+  })
 }
 
 shinyApp(ui, server)
