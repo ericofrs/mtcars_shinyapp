@@ -18,7 +18,7 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Plotly", plotlyOutput("plotly_plot")),
-        tabPanel("Reactable", reactableOutput("reactable_table")),
+        tabPanel("Reactable", reactableOutput(" reactable_table")),
         tabPanel("DT Table", DTOutput("dt")),
         tabPanel("Highcharter", highchartOutput("highcharter_plot"))
       ),
@@ -37,7 +37,11 @@ server <- function(input, output, session) {
     
     # Source the visualization scripts
     source("modules/dt.R", local = TRUE)
-  
+   
+    
+     output$reactable_table <- renderReactable({
+      reactablefunction(data)
+    })  
 }
 
 shinyApp(ui, server)
