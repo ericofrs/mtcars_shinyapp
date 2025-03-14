@@ -28,9 +28,9 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-
-  
-  # Call modules
+  output$reactable_table <- renderReactable({
+    reactablefunction(data)
+  })  
 
 }
 
