@@ -4,7 +4,7 @@ output$plotlyPlot <- renderPlotly({
   # Create the scatter plot dynamically based on user inputs
   plot_ly(
     data = filtered_data(),
-    x = ~mpg,             # X-axis variable
+    x = ~get(input$var),             # X-axis variable
     y = ~hp,            # Y-axis variable
     color = ~factor(cyl),# Color points by the number of cylinders
     type = "scatter",    # Specify scatter plot
@@ -12,8 +12,8 @@ output$plotlyPlot <- renderPlotly({
     marker = list(size = 10) # Adjust marker size
   ) %>%
     layout(
-      title = "Dynamic Scatter Plot with mtcars Dataset",
-      xaxis = list(title = "Miles per Gallon"),  # Y-axis label
+      title = paste("Scatter Plot:", input$var, "vs Horsepower"),
+      xaxis = list(title = input$var),  # Y-axis label
       yaxis = list(title = "Horsepower"),  # X-axis label
       legend = list(title = list(text = "Cylinders"))  # Legend title
     )
