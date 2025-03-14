@@ -4,11 +4,11 @@ library(reactable)
 library(DT)
 library(highcharter)
 
-#call modules
+data("mtcars")
 
 ui <- fluidPage(
   titlePanel("MTcars Shiny App"),
-  
+
   sidebarLayout(
     sidebarPanel(
       selectInput("var", "Choose a variable:", choices = names(mtcars)[1:4]),
@@ -19,19 +19,25 @@ ui <- fluidPage(
       tabsetPanel(
         tabPanel("Plotly", plotlyOutput("plotly_plot")),
         tabPanel("Reactable", reactableOutput("reactable_table")),
-        tabPanel("DT Table", DTOutput("dt_table")),
+        tabPanel("DT Table", DTOutput("dt")),
         tabPanel("Highcharter", highchartOutput("highcharter_plot"))
-      )
+      ),
     )
   )
 )
 
 server <- function(input, output, session) {
-
-
+    # Reactive filtered data
+    filtered_data <- reactive({
+      input$apply_filter
+      isolate({
+        mtcars[mtcars$mpg >= input$range[1] & mtcars$mpg <= input$range[2], ]
+      })
+    })
+    
+    # Source the visualization scripts
+    source("modules/dt.R", local = TRUE)
   
-  # Call modules
-
 }
 
 shinyApp(ui, server)
