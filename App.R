@@ -33,7 +33,7 @@ server <- function(input, output, session) {
       filter(mpg >= input$range[1], mpg <= input$range[2])
   })
   
-  output$highchart <- renderHighchart({  
+  output$highchart_plot <- renderHighchart({  
   highchart()%>%
     hc_add_series(filtered_data(), "scatter", 
                   hcaes(x = mpg, y = hp, group = factor(cyl)),
