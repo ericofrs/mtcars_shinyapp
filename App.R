@@ -18,7 +18,7 @@ ui <- fluidPage(
     ),
     mainPanel(
       tabsetPanel(
-        tabPanel("Plotly", plotlyOutput("plotly_plot")),
+        tabPanel("Plotly", plotlyOutput("plotlyPlot")),
         tabPanel("Reactable", reactableOutput("reactable_table")),
         tabPanel("DT Table", DTOutput("dt")),
         tabPanel("Highcharter", highchartOutput("highchart"))
@@ -39,6 +39,7 @@ server <- function(input, output, session) {
     # Source the visualization scripts
     source("modules/dt.R", local = TRUE)
     source("modules/highcharter.R", local = TRUE)
+    source("modules/plotly.R", local = TRUE)
     
     output$reactable_table <- renderReactable({
       reactablefunction(filtered_data())
